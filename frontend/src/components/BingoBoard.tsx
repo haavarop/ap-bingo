@@ -9,8 +9,7 @@ import styled from "styled-components";
 import { BingoCell } from "./BingoCell";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import ConfettiExplosion from "react-confetti-explosion";
-import useSound from "use-sound";
-import success from "../../public/Success.mp3"
+import success from "../../public/Success.mp3";
 
 type Props = {
   initialBoard?: BingoBoardType;
@@ -51,7 +50,7 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
   const [board, setBoard] = useState<BingoBoardType>(localData);
   const [bingoIndex, setBingoIndex] = useState<number | null>(null);
 
-  const [play] = useSound(success)
+  const [sound] = useState(new Audio(success));
 
   const newBoard = async () => {
     const data = await getBingoBoard();
@@ -70,7 +69,7 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
     const isBingo = validate(cpy, index);
     if (isBingo) {
       setBingoIndex(index);
-      play()
+      sound.play();
     }
     setBoard(cpy);
   };

@@ -12,6 +12,15 @@ export type BingoBoard = [string, boolean][];
 
 export const LOCALSTORAGE_KEY = "bingoBoard";
 
+const shuffleArray = (array: BingoBoard) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+};
+
 export async function getBingoBoard(): Promise<BingoDocumnet> {
   const data = (await client.fetch('*[_type == "bingo"][0]')) as BingoDocumnet;
   return data;
@@ -33,6 +42,9 @@ function App() {
         const playerData = data.bingoList.map(
           (s) => [s, false] as [string, boolean]
         );
+
+        shuffleArray(playerData);
+
         setLocalData(playerData);
         setInitialboard(playerData);
       }

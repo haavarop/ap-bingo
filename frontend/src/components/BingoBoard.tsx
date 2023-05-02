@@ -9,6 +9,8 @@ import styled from "styled-components";
 import { BingoCell } from "./BingoCell";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import ConfettiExplosion from "react-confetti-explosion";
+import useSound from "use-sound";
+import success from "./Success.mp3"
 
 type Props = {
   initialBoard?: BingoBoardType;
@@ -49,6 +51,8 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
   const [board, setBoard] = useState<BingoBoardType>(localData);
   const [bingoIndex, setBingoIndex] = useState<number | null>(null);
 
+  const [play] = useSound(success)
+
   const newBoard = async () => {
     const data = await getBingoBoard();
     const playerData = data.bingoList.map(
@@ -57,6 +61,7 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
     shuffleArray(playerData);
     setLocalData(playerData.slice(0, 25));
     setBoard(playerData.slice(0, 25));
+    setBingoIndex(null);
   };
 
   const handleClick = (index: number) => {
@@ -65,6 +70,7 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
     const isBingo = validate(cpy, index);
     if (isBingo) {
       setBingoIndex(index);
+      play()
     }
     setBoard(cpy);
   };
@@ -90,7 +96,7 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
         <TitleContainer>
           {bingoIndex !== null && <ConfettiExplosion />}
           <Title>
-            {bingoIndex === null ? `🌹 Årsmøtebingo 🌹` : `🎉 BINGO 🎉`}
+            {bingoIndex === null ? `🌹 Landsmøtebingo 🌹` : `🎉 BINGO 🎉`}
           </Title>
           {bingoIndex !== null && <ConfettiExplosion />}
         </TitleContainer>

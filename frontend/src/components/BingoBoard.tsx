@@ -57,6 +57,7 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
     shuffleArray(playerData);
     setLocalData(playerData.slice(0, 25));
     setBoard(playerData.slice(0, 25));
+    setBingoIndex(null);
   };
 
   const handleClick = (index: number) => {

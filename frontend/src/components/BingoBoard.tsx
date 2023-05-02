@@ -9,11 +9,12 @@ export const BingoBoard: React.FC = () => {
     LOCALSTORAGE_KEY,
     []
   );
+
   const [board, setBoard] = useState(localData);
 
   const handleClick = (index: number) => {
     const cpy = [...board];
-    cpy.splice(index, 1, [cpy[index][0], true]);
+    cpy.splice(index, 1, [cpy[index][0], !cpy[index][1]]);
     setBoard(cpy);
   };
 

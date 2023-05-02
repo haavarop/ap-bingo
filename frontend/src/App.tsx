@@ -46,8 +46,8 @@ function App() {
 
         shuffleArray(playerData);
 
-        setLocalData(playerData);
-        setInitialboard(playerData);
+        setLocalData(playerData.slice(0, 25));
+        setInitialboard(playerData.slice(0, 25));
       }
     };
 

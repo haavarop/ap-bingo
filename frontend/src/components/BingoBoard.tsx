@@ -3,9 +3,36 @@ import { BingoBoard as BingoBoardType, LOCALSTORAGE_KEY } from "../App";
 import styled from "styled-components";
 import { BingoCell } from "./BingoCell";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import ConfettiExplosion from "react-confetti-explosion";
 
 type Props = {
   initialBoard?: BingoBoardType;
+};
+
+const validate = (board: BingoBoardType, index: number) => {
+  // Validate row
+  const rowStart = index - (index % 5);
+  const rowEnd = rowStart + 5;
+  const cpy = [...board].slice(rowStart, rowEnd);
+  const rowBingo = cpy.filter((cell) => cell[1]).length === 5;
+
+  const remainder = index % 5;
+  const colBingo =
+    board.filter((cell, i) => i % 5 === remainder && cell[1]).length === 5;
+
+  const leftDiagBingo =
+    index % 6 === 0 &&
+    board.filter((cell, i) => i % 6 === 0 && cell[1]).length === 5;
+
+  const rightDiagBingo =
+    index % 4 === 0 &&
+    index !== 0 &&
+    board.filter((cell, i) => i % 4 === 0 && i !== 0 && cell[1]).length === 5;
+
+  if (rowBingo || colBingo || leftDiagBingo || rightDiagBingo) {
+    return true;
+  }
+  return false;
 };
 
 export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
@@ -14,11 +41,16 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
     []
   );
 
-  const [board, setBoard] = useState(localData);
+  const [board, setBoard] = useState<BingoBoardType>(localData);
+  const [bingoIndex, setBingoIndex] = useState<number | null>(null);
 
   const handleClick = (index: number) => {
     const cpy = [...board];
     cpy.splice(index, 1, [cpy[index][0], !cpy[index][1]]);
+    const isBingo = validate(cpy, index);
+    if (isBingo) {
+      setBingoIndex(index);
+    }
     setBoard(cpy);
   };
 
@@ -36,10 +68,19 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
 
   return (
     <Container>
-      <Title>Årsmøtebingo</Title>
+      <Title>
+        {bingoIndex === null ? (
+          `🌹 Årsmøtebingo 🌹`
+        ) : (
+          <>
+            <ConfettiExplosion /> 🎉 BINGO 🎉 <ConfettiExplosion />{" "}
+          </>
+        )}
+      </Title>
       <Board>
         {board.map(([value, isChecked], i) => (
           <BingoCell
+            bingoIndex={bingoIndex}
             handleClick={handleClick}
             key={value}
             value={value}

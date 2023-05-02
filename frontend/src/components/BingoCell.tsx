@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import ConfettiExplosion from "react-confetti-explosion";
 
 type Props = {
   value: string;
   isChecked: boolean;
   handleClick: (index: number) => void;
   cellIndex: number;
+  bingoIndex: number | null;
 };
 
 export const BingoCell: React.FC<Props> = ({
@@ -13,11 +15,16 @@ export const BingoCell: React.FC<Props> = ({
   isChecked,
   handleClick,
   cellIndex,
+  bingoIndex,
 }) => {
   return (
-    <Cell onClick={() => handleClick(cellIndex)} isChecked={isChecked}>
-      {value}
-    </Cell>
+    <>
+      <Cell onClick={() => handleClick(cellIndex)} isChecked={isChecked}>
+        {bingoIndex === cellIndex && <ConfettiExplosion />}
+        {value}
+        {bingoIndex === cellIndex && <ConfettiExplosion />}
+      </Cell>
+    </>
   );
 };
 

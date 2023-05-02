@@ -10,7 +10,7 @@ import { BingoCell } from "./BingoCell";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import ConfettiExplosion from "react-confetti-explosion";
 import useSound from "use-sound";
-import success from "./Success.mp3"
+import success from "../../public/Success.mp3"
 
 type Props = {
   initialBoard?: BingoBoardType;

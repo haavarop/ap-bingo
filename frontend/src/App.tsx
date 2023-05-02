@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { client } from "./client";
 import { BingoBoard } from "./components/BingoBoard";
 import { useLocalStorage } from "./hooks/useLocalStorage";
+import "./index.css";
 
 export type BingoDocumnet = {
   _id: string;

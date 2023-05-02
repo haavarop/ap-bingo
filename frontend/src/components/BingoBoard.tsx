@@ -35,22 +35,39 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
   }, [board, setLocalData]);
 
   return (
-    <Board>
-      {board.map(([value, isChecked], i) => (
-        <BingoCell
-          handleClick={handleClick}
-          key={value}
-          value={value}
-          isChecked={isChecked}
-          cellIndex={i}
-        />
-      ))}
-    </Board>
+    <Container>
+      <Title>Årsmøtebingo</Title>
+      <Board>
+        {board.map(([value, isChecked], i) => (
+          <BingoCell
+            handleClick={handleClick}
+            key={value}
+            value={value}
+            isChecked={isChecked}
+            cellIndex={i}
+          />
+        ))}
+      </Board>
+    </Container>
   );
 };
 
 const Board = styled.div`
-  width: 1000px;
+  width: calc(800px + 16 * 4px);
   display: flex;
   flex-wrap: wrap;
+  gap: 16px;
+`;
+
+const Container = styled.div`
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const Title = styled.h1`
+  color: #2f2c2f;
+  font-size: 72px;
 `;

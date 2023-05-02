@@ -23,11 +23,13 @@ export const BingoCell: React.FC<Props> = ({
 
 const Cell = styled.button<{ isChecked: boolean }>`
   border: 1px solid black;
-  width: 200px;
-  height: 200px;
+  width: 160px;
+  height: 160px;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background: ${({ isChecked }) => (isChecked ? "#90EE90" : "white")};
+  transition: 0.4s;
+  color: ${({ isChecked }) => (isChecked ? "white" : "#2f2c2f")};
+  background: ${({ isChecked }) => (isChecked ? "#d70926" : "white")};
 `;

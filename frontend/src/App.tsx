@@ -23,10 +23,10 @@ function App() {
     []
   );
 
+  const [initialBoard, setInitialboard] = useState<BingoBoard | undefined>();
+
   useEffect(() => {
-    
     const fetchData = async () => {
-      
       if (localData.length === 0) {
         console.log("No localData");
         const data = await getBingoBoard();
@@ -34,13 +34,14 @@ function App() {
           (s) => [s, false] as [string, boolean]
         );
         setLocalData(playerData);
+        setInitialboard(playerData);
       }
     };
 
     fetchData().catch(console.error);
   });
 
-  return <BingoBoard />;
+  return <BingoBoard initialBoard={initialBoard} />;
 }
 
 export default App;

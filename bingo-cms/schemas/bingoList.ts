@@ -13,4 +13,11 @@ export default defineField({
       of: [{type: 'string'}],
     },
   ],
+  preview: {
+    prepare() {
+      return {
+        title: 'Bingo!',
+      }
+    },
+  },
 })

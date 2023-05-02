@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { BingoBoard as BingoBoardType, LOCALSTORAGE_KEY } from "../App";
+import {
+  BingoBoard as BingoBoardType,
+  LOCALSTORAGE_KEY,
+  getBingoBoard,
+  shuffleArray,
+} from "../App";
 import styled from "styled-components";
 import { BingoCell } from "./BingoCell";
 import { useLocalStorage } from "../hooks/useLocalStorage";
@@ -44,6 +49,16 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
   const [board, setBoard] = useState<BingoBoardType>(localData);
   const [bingoIndex, setBingoIndex] = useState<number | null>(null);
 
+  const newBoard = async () => {
+    const data = await getBingoBoard();
+    const playerData = data.bingoList.map(
+      (s) => [s, false] as [string, boolean]
+    );
+    shuffleArray(playerData);
+    setLocalData(playerData.slice(0, 25));
+    setBoard(playerData.slice(0, 25));
+  };
+
   const handleClick = (index: number) => {
     const cpy = [...board];
     cpy.splice(index, 1, [cpy[index][0], !cpy[index][1]]);
@@ -67,29 +82,32 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
   }, [board, setLocalData]);
 
   return (
-    <Container>
-      <Title>
-        {bingoIndex === null ? (
-          `🌹 Årsmøtebingo 🌹`
-        ) : (
-          <>
-            <ConfettiExplosion /> 🎉 BINGO 🎉 <ConfettiExplosion />{" "}
-          </>
-        )}
-      </Title>
-      <Board>
-        {board.map(([value, isChecked], i) => (
-          <BingoCell
-            bingoIndex={bingoIndex}
-            handleClick={handleClick}
-            key={value}
-            value={value}
-            isChecked={isChecked}
-            cellIndex={i}
-          />
-        ))}
-      </Board>
-    </Container>
+    <>
+      <Menu>
+        <button onClick={newBoard}>🔄</button>
+      </Menu>
+      <Container>
+        <TitleContainer>
+          {bingoIndex !== null && <ConfettiExplosion />}
+          <Title>
+            {bingoIndex === null ? `🌹 Årsmøtebingo 🌹` : `🎉 BINGO 🎉`}
+          </Title>
+          {bingoIndex !== null && <ConfettiExplosion />}
+        </TitleContainer>
+        <Board>
+          {board.map(([value, isChecked], i) => (
+            <BingoCell
+              bingoIndex={bingoIndex}
+              handleClick={handleClick}
+              key={i}
+              value={value}
+              isChecked={isChecked}
+              cellIndex={i}
+            />
+          ))}
+        </Board>
+      </Container>
+    </>
   );
 };
 
@@ -98,6 +116,17 @@ const Board = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Menu = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
 `;
 
 const Container = styled.div`

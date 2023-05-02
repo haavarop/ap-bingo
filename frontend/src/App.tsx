@@ -13,7 +13,7 @@ export type BingoBoard = [string, boolean][];
 
 export const LOCALSTORAGE_KEY = "bingoBoard";
 
-const shuffleArray = (array: BingoBoard) => {
+export const shuffleArray = (array: BingoBoard) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     const temp = array[i];
@@ -36,7 +36,7 @@ function App() {
   const [initialBoard, setInitialboard] = useState<BingoBoard | undefined>();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const loadData = async () => {
       if (localData.length === 0) {
         console.log("No localData");
         const data = await getBingoBoard();
@@ -45,13 +45,12 @@ function App() {
         );
 
         shuffleArray(playerData);
-
         setLocalData(playerData.slice(0, 25));
         setInitialboard(playerData.slice(0, 25));
       }
     };
 
-    fetchData().catch(console.error);
+    loadData().catch(console.error);
   });
 
   return <BingoBoard initialBoard={initialBoard} />;

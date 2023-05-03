@@ -19,7 +19,11 @@ export const BingoCell: React.FC<Props> = ({
 }) => {
   return (
     <>
-      <Cell onClick={() => handleClick(cellIndex)} isChecked={isChecked}>
+      <Cell
+        onClick={() => handleClick(cellIndex)}
+        isChecked={isChecked}
+        index={cellIndex}
+      >
         {bingoIndex === cellIndex && <ConfettiExplosion />}
         {value}
         {bingoIndex === cellIndex && <ConfettiExplosion />}
@@ -28,20 +32,30 @@ export const BingoCell: React.FC<Props> = ({
   );
 };
 
-const Cell = styled.button<{ isChecked: boolean }>`
+const Cell = styled.button<{ isChecked: boolean; index: number }>`
+  display: flex;
   background-color: rgba(255, 255, 255, 0.5);
   background-repeat: no-repeat;
   background-position: center;
   background-size: auto 70%;
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  padding: 10px;
+  padding: 2px;
   text-align: center;
-  font-size: 11px;
-  display: flex;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.8);
+  border-left: 1px solid rgba(0, 0, 0, 0.8);
+
+  border-bottom: ${({ index }) =>
+    index > 19 ? "1px solid rgba(0, 0, 0, 0.8)" : 0};
+
+  border-right: ${({ index }) =>
+    index % 5 === 4 ? "1px solid rgba(0, 0, 0, 0.8)" : 0};
+
+  font-size: 12px;
   overflow: hidden;
   word-break: break-word;
-  transition: 0.4s;
   align-items: center;
+  justify-content: center;
+  transition: 0.4s;
   color: ${({ isChecked }) => (isChecked ? "white" : "#2f2c2f")};
   background: ${({ isChecked }) => (isChecked ? "#d70926" : "white")};
 `;

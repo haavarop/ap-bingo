@@ -9,8 +9,6 @@ import styled from "styled-components";
 import { BingoCell } from "./BingoCell";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import ConfettiExplosion from "react-confetti-explosion";
-import useSound from "use-sound";
-import success from "../../public/Success.mp3"
 
 type Props = {
   initialBoard?: BingoBoardType;
@@ -51,8 +49,6 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
   const [board, setBoard] = useState<BingoBoardType>(localData);
   const [bingoIndex, setBingoIndex] = useState<number | null>(null);
 
-  const [play] = useSound(success)
-
   const newBoard = async () => {
     const data = await getBingoBoard();
     const playerData = data.bingoList.map(
@@ -70,7 +66,6 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
     const isBingo = validate(cpy, index);
     if (isBingo) {
       setBingoIndex(index);
-      play()
     }
     setBoard(cpy);
   };
@@ -89,9 +84,7 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
 
   return (
     <>
-      <Menu>
-        <button onClick={newBoard}>🔄</button>
-      </Menu>
+      
       <Container>
         <TitleContainer>
           {bingoIndex !== null && <ConfettiExplosion />}
@@ -99,6 +92,9 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
             {bingoIndex === null ? `🌹 Landsmøtebingo 🌹` : `🎉 BINGO 🎉`}
           </Title>
           {bingoIndex !== null && <ConfettiExplosion />}
+          <Menu>
+            <button className="button__refresh" onClick={newBoard}>Gi meg et nytt brett</button>
+          </Menu>
         </TitleContainer>
         <Board>
           {board.map(([value, isChecked], i) => (
@@ -118,21 +114,47 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
 };
 
 const Board = styled.div`
-  width: calc(800px + 16 * 4px);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  background-color: #efefef;
+  width: 100vw;
+  max-width: 110vh;
+  height: 100vw;
+  max-height: 75vh;
+  min-height: 75vh;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
 `;
 
 const TitleContainer = styled.div`
   display: flex;
   align-items: center;
+  flex-direction: row;
+  margin: auto;
+  justify-content: space-between;
 `;
 
 const Menu = styled.div`
-  position: fixed;
-  top: 0;
-  right: 0;
+display: flex;
+border: 3px solid #b21c17;
+color: #ffffff;
+height: 7vh;
+width: 10vh;
+border-radius: 10px;
+cursor: pointer;
+background-color: #e21617;
+button.button__refresh {
+  background-color: transparent;
+  color: "white"
+  padding: 10px;
+  font-size: 8px;
+  border: none;
+}
+}
 `;
 
 const Container = styled.div`
@@ -145,5 +167,4 @@ const Container = styled.div`
 
 const Title = styled.h1`
   color: #2f2c2f;
-  font-size: 72px;
 `;

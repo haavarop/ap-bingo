@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import ConfettiExplosion from "react-confetti-explosion";
-import logo from "../../public/logo.png"
 
 type Props = {
   value: string;

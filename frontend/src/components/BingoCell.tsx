@@ -36,11 +36,12 @@ const Cell = styled.button<{ isChecked: boolean }>`
   border: 1px solid rgba(0, 0, 0, 0.8);
   padding: 10px;
   text-align: center;
-  font-size: 13px;
+  font-size: 11px;
   display: flex;
   overflow: hidden;
   word-break: break-word;
   transition: 0.4s;
+  align-items: center;
   color: ${({ isChecked }) => (isChecked ? "white" : "#2f2c2f")};
   background: ${({ isChecked }) => (isChecked ? "#d70926" : "white")};
 `;

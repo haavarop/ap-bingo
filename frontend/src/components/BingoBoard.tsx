@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { BingoCell } from "./BingoCell";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import ConfettiExplosion from "react-confetti-explosion";
+import logo from "../../public/logo.png"
 
 type Props = {
   initialBoard?: BingoBoardType;
@@ -88,9 +89,11 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
       <Container>
         <TitleContainer>
           {bingoIndex !== null && <ConfettiExplosion />}
+            <img src={logo} style={{ height: '44px', width: '44px' }}/>
           <Title>
-            {bingoIndex === null ? `🌹 Landsmøtebingo 🌹` : `🎉 BINGO 🎉`}
+            {bingoIndex === null ? `Landsmøtebingo` : `🎉 BINGO 🎉`}
           </Title>
+          <img className="header-logo" src={logo} style={{ height: '44px', width: '44px' }}/>
           {bingoIndex !== null && <ConfettiExplosion />}
           <Menu>
             <button className="button__refresh" onClick={newBoard}>Gi meg et nytt brett</button>
@@ -141,9 +144,9 @@ const TitleContainer = styled.div`
 const Menu = styled.div`
 display: flex;
 border: 3px solid #b21c17;
-color: #ffffff;
 height: 7vh;
 width: 10vh;
+margin-left: 10px;
 border-radius: 10px;
 cursor: pointer;
 background-color: #e21617;
@@ -153,6 +156,7 @@ button.button__refresh {
   padding: 10px;
   font-size: 8px;
   border: none;
+  cursor: pointer;
 }
 }
 `;

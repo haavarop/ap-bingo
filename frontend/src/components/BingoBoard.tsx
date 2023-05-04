@@ -85,19 +85,16 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
 
   return (
     <>
-      
       <Container>
         <TitleContainer>
           {bingoIndex !== null && <ConfettiExplosion />}
-            <img src={logo} style={{ height: '44px', width: '44px' }}/>
+          {bingoIndex === null ? <img src={logo} style={{ height: '44px', width: '44px' }}/> : ""}
           <Title>
             {bingoIndex === null ? `Landsmøtebingo` : `🎉 BINGO 🎉`}
           </Title>
-          <img className="header-logo" src={logo} style={{ height: '44px', width: '44px' }}/>
+          {bingoIndex === null ? <img src={logo} style={{ height: '44px', width: '44px' }}/> : ""}
           {bingoIndex !== null && <ConfettiExplosion />}
-          <Menu>
-            <button className="button__refresh" onClick={newBoard}>Gi meg et nytt brett</button>
-          </Menu>
+          <MenuButton onClick={newBoard}>Nytt brett</MenuButton>
         </TitleContainer>
         <Board>
           {board.map(([value, isChecked], i) => (
@@ -136,29 +133,30 @@ const Board = styled.div`
 const TitleContainer = styled.div`
   display: flex;
   align-items: center;
-  flex-direction: row;
-  margin: auto;
-  justify-content: space-between;
+  justify-content: center;
+  position: relative;
+  width: 110vh;
+
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+    margin-bottom: 24px;
+  }
 `;
 
-const Menu = styled.div`
-display: flex;
-border: 3px solid #b21c17;
-height: 7vh;
-width: 10vh;
-margin-left: 10px;
-border-radius: 10px;
-cursor: pointer;
-background-color: #e21617;
-button.button__refresh {
-  background-color: transparent;
-  color: "white"
-  padding: 10px;
-  font-size: 8px;
-  border: none;
+const MenuButton = styled.button`
+  position: absolute;
+  right: 0;
+  border: 2px solid #b21c17;
+  border-radius: 10px;
   cursor: pointer;
-}
-}
+  background-color: #e21617;
+  color: white;
+  padding: 10px;
+  font-size: 12px;
+
+  @media only screen and (max-width: 600px) {
+    position: unset;
+  }
 `;
 
 const Container = styled.div`

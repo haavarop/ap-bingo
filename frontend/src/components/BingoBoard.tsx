@@ -9,7 +9,7 @@ import styled from "styled-components";
 import { BingoCell } from "./BingoCell";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import ConfettiExplosion from "react-confetti-explosion";
-import logo from "../../public/logo.png"
+import logo from "../../public/logo.png";
 
 type Props = {
   initialBoard?: BingoBoardType;
@@ -87,13 +87,15 @@ export const BingoBoard: React.FC<Props> = ({ initialBoard }) => {
     <>
       <Container>
         <TitleContainer>
-          {bingoIndex !== null && <ConfettiExplosion />}
-          {bingoIndex === null ? <img src={logo} style={{ height: '44px', width: '44px' }}/> : ""}
-          <Title>
-            {bingoIndex === null ? `Landsmøtebingo` : `🎉 BINGO 🎉`}
-          </Title>
-          {bingoIndex === null ? <img src={logo} style={{ height: '44px', width: '44px' }}/> : ""}
-          {bingoIndex !== null && <ConfettiExplosion />}
+          <Inner>
+            {bingoIndex !== null && <ConfettiExplosion />}
+            {bingoIndex === null ? <StyledImg src={logo} /> : ""}
+            <Title>
+              {bingoIndex === null ? `Landsmøtebingo` : `🎉 BINGO 🎉`}
+            </Title>
+            {bingoIndex === null ? <StyledImg src={logo} /> : ""}
+            {bingoIndex !== null && <ConfettiExplosion />}
+          </Inner>
           <MenuButton onClick={newBoard}>Nytt brett</MenuButton>
         </TitleContainer>
         <Board>
@@ -141,6 +143,17 @@ const TitleContainer = styled.div`
     flex-direction: column;
     margin-bottom: 24px;
   }
+`;
+
+const StyledImg = styled.img`
+  width: 44px;
+  height: 44px;
+`;
+
+const Inner = styled.div`
+  display: flex;
+  gap: 16px;
+  align-items: center;
 `;
 
 const MenuButton = styled.button`
